@@ -1,0 +1,6 @@
+{
+  "Name": "Robot-7-Car-Insurance-Claims-Processor",
+  "ProjectType": "Process",
+  "Description": "A insurance member submits the car insurance claim form from the UiPath Apps, with damge image and AI needs to evaluate if image is AI generated or not. Also forward tasks to human and validates the Policy Number.",
+  "MainFile": "Main.xaml"
+}
