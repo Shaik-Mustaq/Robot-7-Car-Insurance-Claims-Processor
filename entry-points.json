@@ -12,6 +12,12 @@
             "type": "integer",
             "minimum": -79228162514264337593543950335,
             "maximum": 79228162514264337593543950335
+          },
+          "in_FileName": {
+            "type": "string"
+          },
+          "in_FileExtension": {
+            "type": "string"
           }
         },
         "required": []

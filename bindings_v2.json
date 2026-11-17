@@ -1,4 +1,27 @@
 {
   "version": "2.0",
-  "resources": []
+  "resources": [
+    {
+      "activityDisplayName": "Download Storage Image File",
+      "activityId": "DownloadStorageFile_2",
+      "resource": "bucket",
+      "key": "Operations.VehicleDamagePhotographs",
+      "id": "bucketOperations.VehicleDamagePhotographsOperationsFalseVehicleDamagePhotographsFalse",
+      "value": {
+        "folderPath": {
+          "defaultValue": "Operations",
+          "isExpression": false,
+          "displayName": "Folder path"
+        },
+        "name": {
+          "defaultValue": "VehicleDamagePhotographs",
+          "isExpression": false,
+          "displayName": "Storage bucket name"
+        }
+      },
+      "metadata": {
+        "BindingsVersion": "2.2"
+      }
+    }
+  ]
 }
