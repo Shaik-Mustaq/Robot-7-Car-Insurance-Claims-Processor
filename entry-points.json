@@ -4,7 +4,18 @@
     {
       "filePath": "Main.xaml",
       "uniqueId": "458a7ff9-706b-471a-836f-ceb141626a4d",
-      "type": "process"
+      "type": "process",
+      "input": {
+        "type": "object",
+        "properties": {
+          "in_PolicyNumber": {
+            "type": "integer",
+            "minimum": -79228162514264337593543950335,
+            "maximum": 79228162514264337593543950335
+          }
+        },
+        "required": []
+      }
     }
   ]
 }
