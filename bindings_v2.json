@@ -2,6 +2,26 @@
   "version": "2.0",
   "resources": [
     {
+      "activityDisplayName": "Get Secret Asset From Orchestrator",
+      "activityId": "GetSecret_1",
+      "resource": "asset",
+      "key": "Operations.Gemini_API_Key",
+      "id": "assetOperations.Gemini_API_KeyOperationsFalseGemini_API_KeyFalse",
+      "value": {
+        "folderPath": {
+          "defaultValue": "Operations",
+          "isExpression": false
+        },
+        "name": {
+          "defaultValue": "Gemini_API_Key",
+          "isExpression": false
+        }
+      },
+      "metadata": {
+        "BindingsVersion": "2.2"
+      }
+    },
+    {
       "activityDisplayName": "Download Storage Image File",
       "activityId": "DownloadStorageFile_2",
       "resource": "bucket",
