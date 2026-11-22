@@ -1,8 +1,10 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ucas="clr-namespace:UiPath.Core.Activities.Storage;assembly=UiPath.System.Activities" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:s="clr-namespace:System;assembly=System.Private.CoreLib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ucas="clr-namespace:UiPath.Core.Activities.Storage;assembly=UiPath.System.Activities" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
-    <x:Property Name="in_FileExtension" Type="InArgument(x:String)" />
-    <x:Property Name="in_FileName" Type="InArgument(x:String)" />
-    <x:Property Name="in_PolicyNumber" Type="InArgument(x:Decimal)" />
+    <x:Property sap2010:Annotation.AnnotationText="Receive from UiPath Apps" Name="in_LastName" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Receive from UiPath Apps" Name="in_FirstName" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Receive from UiPath Apps" Name="in_EmailAddress" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Receive from UiPath Apps" Name="in_FileName" Type="InArgument(x:String)" />
+    <x:Property sap2010:Annotation.AnnotationText="Receive from UiPath Apps" Name="in_PolicyNumber" Type="InArgument(x:Decimal)" />
   </x:Members>
   <VisualBasic.Settings>
     <x:Null />
@@ -62,6 +64,13 @@
       <x:String>UiPath.Core.Activities.Storage</x:String>
       <x:String>UiPath.Core.Activities.Orchestrator</x:String>
       <x:String>UiPath.Platform</x:String>
+      <x:String>UiPath.Web.Activities.Http.Models</x:String>
+      <x:String>System.Net</x:String>
+      <x:String>UiPath.Web.Activities.Http</x:String>
+      <x:String>UiPath.Sdk.Activities</x:String>
+      <x:String>UiPath.Sdk.Activities.DependencyInjection.Contracts</x:String>
+      <x:String>UiPath.Sdk.Activities.DependencyInjection</x:String>
+      <x:String>System.Activities.Runtime.Collections</x:String>
     </sco:Collection>
   </TextExpression.NamespacesForImplementation>
   <TextExpression.ReferencesForImplementation>
@@ -135,124 +144,212 @@
       <AssemblyReference>Microsoft.VisualBasic.Forms</AssemblyReference>
       <AssemblyReference>Microsoft.VisualBasic.Core</AssemblyReference>
       <AssemblyReference>UiPath.CodedWorkflows</AssemblyReference>
+      <AssemblyReference>UiPath.Web.Activities</AssemblyReference>
+      <AssemblyReference>System.Net.Primitives</AssemblyReference>
+      <AssemblyReference>System.Net.HttpListener</AssemblyReference>
+      <AssemblyReference>System.Net.WebProxy</AssemblyReference>
+      <AssemblyReference>System.Net.NameResolution</AssemblyReference>
+      <AssemblyReference>System.Net.WebHeaderCollection</AssemblyReference>
+      <AssemblyReference>System.Net.WebClient</AssemblyReference>
+      <AssemblyReference>System.Net.Requests</AssemblyReference>
     </sco:Collection>
   </TextExpression.ReferencesForImplementation>
   <sap:WorkflowViewStateService.ViewState>
     <scg:Dictionary x:TypeArguments="x:String, x:Object">
       <x:Boolean x:Key="ShouldExpandAll">True</x:Boolean>
+      <x:Boolean x:Key="ShouldCollapseAll">False</x:Boolean>
     </scg:Dictionary>
   </sap:WorkflowViewStateService.ViewState>
-  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="880,2497.3333333333335" sap2010:WorkflowViewState.IdRef="Sequence_2">
+  <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="844,3732.666666666667" sap2010:WorkflowViewState.IdRef="Sequence_2">
     <Sequence.Variables>
       <Variable x:TypeArguments="sd:DataTable" Name="DT_InsurancePolicies" />
       <Variable x:TypeArguments="x:Boolean" Name="IsValidPolicyNumber" />
       <Variable x:TypeArguments="x:Boolean" Name="IsValidStatus" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Get value from GeminiAPICall.xaml" Name="GetAPIStatus" />
+      <Variable x:TypeArguments="x:String" Name="DownloadsFolderPath" />
+      <Variable x:TypeArguments="x:Boolean" sap2010:Annotation.AnnotationText="Get value from GeminiAPICall.xaml" Name="IsAIGenerated" />
+      <Variable x:TypeArguments="x:Int32" sap2010:Annotation.AnnotationText="Get value from GeminiAPICall.xaml" Name="Confidence" />
+      <Variable x:TypeArguments="x:String" sap2010:Annotation.AnnotationText="Get value from GeminiAPICall.xaml" Name="Reason" />
     </Sequence.Variables>
     <sap:WorkflowViewStateService.ViewState>
       <scg:Dictionary x:TypeArguments="x:String, x:Object">
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:ReadRange AddHeaders="True" DataTable="[DT_InsurancePolicies]" DisplayName="Read Range InsurancePolicies Workbook" sap:VirtualizedContainerService.HintSize="488,229.33333333333334" sap2010:WorkflowViewState.IdRef="ReadRange_2" SheetName="Members" WorkbookPath="[Path.Combine(Environment.CurrentDirectory, &quot;InsurancePolicies.xlsx&quot;)]">
-      <ui:ReadRange.Range>
-        <InArgument x:TypeArguments="x:String">
-          <Literal x:TypeArguments="x:String" Value="" />
-        </InArgument>
-      </ui:ReadRange.Range>
+    <ui:LogMessage DisplayName="Log Started Message" sap:VirtualizedContainerService.HintSize="686,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Info" Message="[&quot;Car Insurance Claim Process Started!&quot;]" />
+    <TryCatch DisplayName="Try Catch for Main" sap:VirtualizedContainerService.HintSize="686,3533.3333333333335" sap2010:WorkflowViewState.IdRef="TryCatch_2">
       <sap:WorkflowViewStateService.ViewState>
         <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
           <x:Boolean x:Key="IsPinned">False</x:Boolean>
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
-    </ui:ReadRange>
-    <ui:LogMessage DisplayName="Log Read Completion Message" sap:VirtualizedContainerService.HintSize="488,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Read Excel File Successfully - &quot; +Path.Combine(Environment.CurrentDirectory, &quot;InsurancePolicies.xlsx&quot;)]">
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          <x:Boolean x:Key="IsPinned">False</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-    </ui:LogMessage>
-    <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="488,57.333333333333336" sap2010:WorkflowViewState.IdRef="CommentOut_1">
-      <ui:CommentOut.Body>
-        <Sequence DisplayName="Ignored activities" sap:VirtualizedContainerService.HintSize="650,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_3">
+      <TryCatch.Try>
+        <Sequence DisplayName="Try" sap:VirtualizedContainerService.HintSize="684,3148.6666666666665" sap2010:WorkflowViewState.IdRef="Sequence_11">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
               <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsPinned">False</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Assign sap:VirtualizedContainerService.HintSize="616,167.33333333333334" sap2010:WorkflowViewState.IdRef="Assign_1">
-            <Assign.To>
-              <OutArgument x:TypeArguments="x:Boolean">[IsValidPolicyNumber]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="x:Boolean">[dt_InsurancePolicies.AsEnumerable().Any(Function(row) row.Field(Of Double)("Policy Number") = in_PolicyNumber)]</InArgument>
-            </Assign.Value>
-          </Assign>
+          <Sequence DisplayName="Main Sequence" sap:VirtualizedContainerService.HintSize="650,3088.6666666666665" sap2010:WorkflowViewState.IdRef="Sequence_10">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                <x:Boolean x:Key="IsPinned">False</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <ui:ReadRange AddHeaders="True" DataTable="[DT_InsurancePolicies]" DisplayName="Read Range InsurancePolicies Workbook" sap:VirtualizedContainerService.HintSize="616,229.33333333333334" sap2010:WorkflowViewState.IdRef="ReadRange_2" SheetName="Members" WorkbookPath="[Path.Combine(Environment.CurrentDirectory, &quot;InsurancePolicies.xlsx&quot;)]">
+              <ui:ReadRange.Range>
+                <InArgument x:TypeArguments="x:String">
+                  <Literal x:TypeArguments="x:String" Value="" />
+                </InArgument>
+              </ui:ReadRange.Range>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:ReadRange>
+            <ui:LogMessage DisplayName="Log Read Completion Message" sap:VirtualizedContainerService.HintSize="616,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Read Excel File Successfully - &quot; +Path.Combine(Environment.CurrentDirectory, &quot;InsurancePolicies.xlsx&quot;)]">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">False</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:LogMessage>
+            <ui:CommentOut DisplayName="Comment Out" sap:VirtualizedContainerService.HintSize="616,57.333333333333336" sap2010:WorkflowViewState.IdRef="CommentOut_1">
+              <ui:CommentOut.Body>
+                <Sequence DisplayName="Ignored activities" sap:VirtualizedContainerService.HintSize="650,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Assign sap:VirtualizedContainerService.HintSize="616,167.33333333333334" sap2010:WorkflowViewState.IdRef="Assign_1">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Boolean">[IsValidPolicyNumber]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Boolean">[dt_InsurancePolicies.AsEnumerable().Any(Function(row) row.Field(Of Double)("Policy Number") = in_PolicyNumber)]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                </Sequence>
+              </ui:CommentOut.Body>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+                  <x:Boolean x:Key="IsPinned">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </ui:CommentOut>
+            <Assign DisplayName="Assign To check Policy no is Valid/Invalid" sap:VirtualizedContainerService.HintSize="616,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_2">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:Boolean">[IsValidPolicyNumber]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:Boolean">[DT_InsurancePolicies.AsEnumerable().Any(Function(row) If(row("Policy Number") Is DBNull.Value OrElse String.IsNullOrEmpty(row("Policy Number").ToString()), CDec(0), CDec(row("Policy Number"))) = in_PolicyNumber)]</InArgument>
+              </Assign.Value>
+            </Assign>
+            <ui:LogMessage DisplayName="Log Policy Number Valid" sap:VirtualizedContainerService.HintSize="616,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Policy Number - &quot; +in_PolicyNumber.ToString + &quot; | &quot; +&quot;Valid - &quot; +IsValidPolicyNumber.ToString]" />
+            <If Condition="[IsValidPolicyNumber=True]" DisplayName="If Policy Number is True" sap:VirtualizedContainerService.HintSize="616,2189.3333333333335" sap2010:WorkflowViewState.IdRef="If_1">
+              <If.Then>
+                <Sequence DisplayName="Then Validate Membership Status" sap:VirtualizedContainerService.HintSize="508.6666666666667,2034" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Assign DisplayName="Assign To check Status is True/False" sap:VirtualizedContainerService.HintSize="474.6666666666667,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_3">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:Boolean">[IsValidStatus]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:Boolean">[dt_InsurancePolicies.AsEnumerable().Any(Function(row) row("Policy Number").ToString().Trim() = in_PolicyNumber.ToString() AndAlso row("Membership Status").ToString().Trim().Equals("TRUE", StringComparison.OrdinalIgnoreCase))]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <ui:LogMessage DisplayName="Log Membership Status Valid" sap:VirtualizedContainerService.HintSize="474.6666666666667,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Membership Status Valid - &quot; +IsValidStatus.ToString]" />
+                  <If Condition="[IsValidStatus=True]" DisplayName="If Policy Number &amp; Membership Status is True" sap:VirtualizedContainerService.HintSize="474.6666666666667,1620.6666666666667" sap2010:WorkflowViewState.IdRef="If_2">
+                    <If.Then>
+                      <Sequence DisplayName="Then Download Image From Storage Bucket" sap:VirtualizedContainerService.HintSize="472.6666666666667,1465.3333333333333" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <Assign DisplayName="Assign Downloads Folder Path" sap:VirtualizedContainerService.HintSize="438.6666666666667,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_4">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="x:String">[DownloadsFolderPath]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="x:String">[Path.Combine(Environment.CurrentDirectory, "Downloads Photographs")]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                        <ui:CreateDirectory ContinueOnError="{x:Null}" Output="{x:Null}" DisplayName="Create 'Downloads Photographs' Folder in Directory" sap:VirtualizedContainerService.HintSize="438.6666666666667,124" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[DownloadsFolderPath]" />
+                        <ui:LogMessage DisplayName="Log Downloads Folder Location" sap:VirtualizedContainerService.HintSize="438.6666666666667,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Sucessfully Created Folder at - &quot; +DownloadsFolderPath]" />
+                        <ucas:DownloadStorageFile TimeoutMS="{x:Null}" Destination="[Path.Combine(DownloadsFolderPath, in_FileName)]" DisplayName="Download Storage Image File" FolderPath="Operations" sap:VirtualizedContainerService.HintSize="438.6666666666667,229.33333333333334" sap2010:WorkflowViewState.IdRef="DownloadStorageFile_2" Path="[in_FileName]" StorageBucketName="VehicleDamagePhotographs" />
+                        <ui:LogMessage DisplayName="Log Downloaded Image Location" sap:VirtualizedContainerService.HintSize="438.6666666666667,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Downloaded Image stored at: &quot; +Path.Combine(DownloadsFolderPath, in_FileName)]" />
+                        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="GeminiAPICall - Invoke Workflow File (GeminiAPICall.xaml)" sap:VirtualizedContainerService.HintSize="438.6666666666667,177.33333333333334" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_4" UnSafe="False" WorkflowFileName="GeminiAPICall.xaml">
+                          <ui:InvokeWorkflowFile.Arguments>
+                            <OutArgument x:TypeArguments="x:String" x:Key="out_GetAPIStatus">[GetAPIStatus]</OutArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_FullFilePath">[in_FileName]</InArgument>
+                            <OutArgument x:TypeArguments="x:String" x:Key="out_Reason">[Reason]</OutArgument>
+                            <OutArgument x:TypeArguments="x:Int32" x:Key="out_Confidence">[Confidence]</OutArgument>
+                            <OutArgument x:TypeArguments="x:Boolean" x:Key="out_IsAIGenerated">[IsAIGenerated]</OutArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_DownloadsFolderPath">[DownloadsFolderPath]</InArgument>
+                          </ui:InvokeWorkflowFile.Arguments>
+                        </ui:InvokeWorkflowFile>
+                        <ui:LogMessage DisplayName="Log three extracted messages" sap:VirtualizedContainerService.HintSize="438.6666666666667,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;Extracted - &quot; +Environment.NewLine +&#xA;IsAIGenerated.ToString +Environment.NewLine +&#xA;Confidence.ToString +Environment.NewLine +&#xA;Reason]" />
+                        <ui:InvokeWorkflowFile ArgumentsVariable="{x:Null}" DisplayName="SendOuputEmail - Invoke Workflow File (SendOuputEmail.xaml)" sap:VirtualizedContainerService.HintSize="438.6666666666667,168" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="SendOuputEmail.xaml">
+                          <ui:InvokeWorkflowFile.Arguments>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_FileName">[in_FileName]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_Reason">[Reason]</InArgument>
+                            <InArgument x:TypeArguments="x:Int32" x:Key="in_Confidence">[Confidence]</InArgument>
+                            <InArgument x:TypeArguments="x:Boolean" x:Key="in_IsAIGenerated">[IsAIGenerated]</InArgument>
+                            <InArgument x:TypeArguments="x:Decimal" x:Key="in_PolicyNumber">[in_PolicyNumber]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_EmailAddress">[in_EmailAddress]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_LastName">[in_LastName]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_GetAPIStatus">[GetAPIStatus]</InArgument>
+                            <InArgument x:TypeArguments="x:String" x:Key="in_FirstName">[in_FirstName]</InArgument>
+                          </ui:InvokeWorkflowFile.Arguments>
+                        </ui:InvokeWorkflowFile>
+                      </Sequence>
+                    </If.Then>
+                  </If>
+                </Sequence>
+              </If.Then>
+            </If>
+          </Sequence>
         </Sequence>
-      </ui:CommentOut.Body>
-      <sap:WorkflowViewStateService.ViewState>
-        <scg:Dictionary x:TypeArguments="x:String, x:Object">
-          <x:Boolean x:Key="IsExpanded">False</x:Boolean>
-          <x:Boolean x:Key="IsPinned">True</x:Boolean>
-        </scg:Dictionary>
-      </sap:WorkflowViewStateService.ViewState>
-    </ui:CommentOut>
-    <Assign DisplayName="Assign To check Policy no is Valid/Invalid" sap:VirtualizedContainerService.HintSize="488,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_2">
-      <Assign.To>
-        <OutArgument x:TypeArguments="x:Boolean">[IsValidPolicyNumber]</OutArgument>
-      </Assign.To>
-      <Assign.Value>
-        <InArgument x:TypeArguments="x:Boolean">[DT_InsurancePolicies.AsEnumerable().Any(Function(row) If(row("Policy Number") Is DBNull.Value OrElse String.IsNullOrEmpty(row("Policy Number").ToString()), CDec(0), CDec(row("Policy Number"))) = in_PolicyNumber)]</InArgument>
-      </Assign.Value>
-    </Assign>
-    <ui:LogMessage DisplayName="Log Policy Number Valid" sap:VirtualizedContainerService.HintSize="488,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[&quot;Policy Number - &quot; +in_PolicyNumber.ToString + &quot; | &quot; +&quot;Valid - &quot; +IsValidPolicyNumber.ToString]" />
-    <If Condition="[IsValidPolicyNumber=True]" DisplayName="If Policy Number is True" sap:VirtualizedContainerService.HintSize="488,1658" sap2010:WorkflowViewState.IdRef="If_1">
-      <If.Then>
-        <Sequence DisplayName="Then Validate Membership Status" sap:VirtualizedContainerService.HintSize="486,1502.6666666666667" sap2010:WorkflowViewState.IdRef="Sequence_4">
+      </TryCatch.Try>
+      <TryCatch.Catches>
+        <Catch x:TypeArguments="s:Exception" sap2010:WorkflowViewState.IdRef="Catch`1_2">
+          <ActivityAction x:TypeArguments="s:Exception">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="s:Exception" Name="exception" />
+            </ActivityAction.Argument>
+            <Sequence DisplayName="Catch" sap:VirtualizedContainerService.HintSize="684,227.33333333333334" sap2010:WorkflowViewState.IdRef="Sequence_12">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <ui:LogMessage DisplayName="Log Exception Message" sap:VirtualizedContainerService.HintSize="650,167.33333333333334" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Info" Message="[&quot;Failed at Main Sequence - &quot; +Environment.NewLine +&#xD;&#xA;&quot;Message - &quot; +exception.Message +Environment.NewLine+ &#xD;&#xA;&quot;Source - &quot; +exception.Source]" />
+            </Sequence>
+          </ActivityAction>
+        </Catch>
+      </TryCatch.Catches>
+      <TryCatch.Finally>
+        <Sequence DisplayName="Finally" sap:VirtualizedContainerService.HintSize="684,25.333333333333332" sap2010:WorkflowViewState.IdRef="Sequence_13">
           <sap:WorkflowViewStateService.ViewState>
             <scg:Dictionary x:TypeArguments="x:String, x:Object">
-              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+              <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+              <x:Boolean x:Key="IsPinned">True</x:Boolean>
             </scg:Dictionary>
           </sap:WorkflowViewStateService.ViewState>
-          <Assign DisplayName="Assign To check Status is True/False" sap:VirtualizedContainerService.HintSize="452,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_3">
-            <Assign.To>
-              <OutArgument x:TypeArguments="x:Boolean">[IsValidStatus]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="x:Boolean">[dt_InsurancePolicies.AsEnumerable().Any(Function(row) row("Policy Number").ToString().Trim() = in_PolicyNumber.ToString() AndAlso row("Membership Status").ToString().Trim().Equals("TRUE", StringComparison.OrdinalIgnoreCase))]</InArgument>
-            </Assign.Value>
-          </Assign>
-          <ui:LogMessage DisplayName="Log Membership Status Valid" sap:VirtualizedContainerService.HintSize="452,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;Membership Status Valid - &quot; +IsValidStatus.ToString]" />
-          <If Condition="[IsValidStatus=True]" DisplayName="If Policy Number &amp; Membership Status is True" sap:VirtualizedContainerService.HintSize="452,1089.3333333333333" sap2010:WorkflowViewState.IdRef="If_2">
-            <If.Then>
-              <Sequence DisplayName="Then Download Image From Storage Bucket" sap:VirtualizedContainerService.HintSize="450,934" sap2010:WorkflowViewState.IdRef="Sequence_5">
-                <Sequence.Variables>
-                  <Variable x:TypeArguments="x:String" Name="DownloadsFolderPath" />
-                </Sequence.Variables>
-                <sap:WorkflowViewStateService.ViewState>
-                  <scg:Dictionary x:TypeArguments="x:String, x:Object">
-                    <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-                  </scg:Dictionary>
-                </sap:WorkflowViewStateService.ViewState>
-                <Assign DisplayName="Assign Downloads Folder Path" sap:VirtualizedContainerService.HintSize="416,176.66666666666666" sap2010:WorkflowViewState.IdRef="Assign_4">
-                  <Assign.To>
-                    <OutArgument x:TypeArguments="x:String">[DownloadsFolderPath]</OutArgument>
-                  </Assign.To>
-                  <Assign.Value>
-                    <InArgument x:TypeArguments="x:String">[Path.Combine(Environment.CurrentDirectory, "Downloads Photographs")]</InArgument>
-                  </Assign.Value>
-                </Assign>
-                <ui:CreateDirectory ContinueOnError="{x:Null}" Output="{x:Null}" DisplayName="Create 'Downloads Photographs' Folder in Directory" sap:VirtualizedContainerService.HintSize="416,124" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[DownloadsFolderPath]" />
-                <ui:LogMessage DisplayName="Log Downloads Folder Location" sap:VirtualizedContainerService.HintSize="416,176.66666666666666" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Sucessfully Created Folder at - &quot; +DownloadsFolderPath]" />
-                <ucas:DownloadStorageFile TimeoutMS="{x:Null}" Destination="[Path.Combine(DownloadsFolderPath, in_FileName)]" DisplayName="Download Storage Image File" FolderPath="Operations" sap:VirtualizedContainerService.HintSize="416,229.33333333333334" sap2010:WorkflowViewState.IdRef="DownloadStorageFile_2" Path="[in_FileName]" StorageBucketName="VehicleDamagePhotographs" />
-                <ui:LogMessage DisplayName="Log Downloaded Image Location" sap:VirtualizedContainerService.HintSize="416,167.33333333333334" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Downloaded Image stored at: &quot; +Path.Combine(DownloadsFolderPath, in_FileName)]" />
-              </Sequence>
-            </If.Then>
-          </If>
         </Sequence>
-      </If.Then>
-    </If>
+      </TryCatch.Finally>
+    </TryCatch>
   </Sequence>
 </Activity>

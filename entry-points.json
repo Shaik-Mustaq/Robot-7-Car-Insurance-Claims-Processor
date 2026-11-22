@@ -11,13 +11,24 @@
           "in_PolicyNumber": {
             "type": "integer",
             "minimum": -79228162514264337593543950335,
-            "maximum": 79228162514264337593543950335
+            "maximum": 79228162514264337593543950335,
+            "description": "Receive from UiPath Apps"
           },
           "in_FileName": {
-            "type": "string"
+            "type": "string",
+            "description": "Receive from UiPath Apps"
           },
-          "in_FileExtension": {
-            "type": "string"
+          "in_LastName": {
+            "type": "string",
+            "description": "Receive from UiPath Apps"
+          },
+          "in_FirstName": {
+            "type": "string",
+            "description": "Receive from UiPath Apps"
+          },
+          "in_EmailAddress": {
+            "type": "string",
+            "description": "Receive from UiPath Apps"
           }
         },
         "required": []
